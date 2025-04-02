@@ -1,7 +1,7 @@
 # environment files for both frontend and backend
-frontend/.env
-backend/.env
+Frontend/.env
+Backend/.env
 
 # Node modules (Frontend & Backend)
-frontend/node_modules
-backend/node_modules
+Frontend/node_modules
+Backend/node_modules
