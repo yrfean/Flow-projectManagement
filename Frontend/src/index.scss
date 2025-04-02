@@ -1,0 +1,21 @@
+// @use "tailwindcss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+$white: #d7e2f1;
+$blue: #89c8e2;
+
+.white {
+  color: $white;
+}
+.blue {
+  color: $blue;
+}
+
+.background {
+  background-color: #277cef;
+}
+
+
