@@ -24,7 +24,7 @@ const Home = () => {
   };
 
   const filterData = async () => {
-    const userId = localStorage.getItem("_id");
+    const userId = sessionStorage.getItem("_id");
 
     const project = await data?.allProjects.find((project: any) => {
       return project.teamLead === userId || project.members.includes(userId); //not sure how member's will work

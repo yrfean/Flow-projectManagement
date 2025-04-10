@@ -44,7 +44,7 @@ const UserDps = ({
         <img
           key={user._id}
           src={user.dp}
-          className={`w-12 h-12 rounded-full hover:shadow hover:scale-105 transition ease-in-out cursor-pointer border-2 border-white shadow-lg ${
+          className={`w-12 h-12 rounded-full object-cover hover:shadow hover:scale-105 transition ease-in-out cursor-pointer border-2 border-white shadow-lg ${
             index === 0 ? "ml-0" : "-ml-3"
           }`}
           onClick={() => changeTasks(user._id)}

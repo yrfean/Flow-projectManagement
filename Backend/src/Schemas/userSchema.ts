@@ -4,6 +4,7 @@ type userType = {
   name: string;
   email: string;
   password: string;
+  otp: string | number |undefined;
   phone: string;
   location?: string;
   role: string;
@@ -14,16 +15,16 @@ const userSchema = new mongoose.Schema<userType>(
   {
     name: {
       type: String,
-      required: true,
     },
     email: {
       type: String,
-      required: true,
       unique: true,
     },
     password: {
       type: String,
-      required: true,
+    },
+    otp: {
+      type: String || Number||undefined,
     },
     phone: {
       type: String,
@@ -33,15 +34,6 @@ const userSchema = new mongoose.Schema<userType>(
     },
     role: {
       type: String,
-      enum: [
-        "developer",
-        "desginer",
-        "ui/ux",
-        "frontend developer",
-        "backend developer",
-        "devops",
-        "digital marketer",
-      ],
     },
     dp: {
       type: String,

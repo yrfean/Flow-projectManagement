@@ -11,7 +11,10 @@ import {
   getUser,
   getUsers,
   login,
+  sendOtp,
+  updatePassword,
   updateUser,
+  verifyOtp,
 } from "./Controllers/userController";
 import { authentication } from "./Middleware/auth";
 import { upload } from "./storage";
@@ -32,11 +35,16 @@ import {
   updateTask,
 } from "./Controllers/taskController";
 import Message from "./Schemas/messageSchema";
-import { deleteMessage, getMessages } from "./Controllers/messageController";
+import {
+  deleteMessage,
+  getAllMessages,
+  getMessages,
+} from "./Controllers/messageController";
 dotenv.config();
 const app = express();
 app.use(express.json());
 app.use("/images", express.static(path.join(__dirname, "..", "images")));
+app.use(express.static(path.join(__dirname, "..", "")));
 app.use(cors());
 connectDB();
 // console.log("Serving images from:", path.join(__dirname, "images"));
@@ -69,7 +77,13 @@ app.delete("/deleteTask/:_id", deleteTask);
 
 //  Messages
 app.get("/getMessages/:senderId/:recieverId", getMessages);
-app.delete("/deleteMessage/:id",deleteMessage);
+app.delete("/deleteMessage/:id", deleteMessage);
+app.get("/getAllMessages", getAllMessages);
+
+// forgot password
+app.post("/sendOtp", sendOtp);
+app.post("/verifyOtp", verifyOtp);
+app.post("/updatePassword", updatePassword);
 
 // Socket.io
 const server = http.createServer(app);
@@ -85,6 +99,7 @@ io.on("connection", (socket) => {
   socket.on("userConnected", (userId) => {
     onlineUsers.set(userId, socket.id);
     console.log("Online user:", onlineUsers);
+    socket.emit("onlineUsers", [...onlineUsers.keys()]);
   });
 
   socket.on("sendMessage", async ({ senderId, message, recieverId }) => {

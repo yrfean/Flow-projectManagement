@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useLoginMutation } from "../Query/QueryAndMutation";
+import { useNavigate } from "react-router-dom";
 
 const ValidationSchema = yup.object({
   email: yup.string().email("it has to be email").required("fill email please"),
@@ -14,6 +15,7 @@ export type formValues = {
 
 const Login = () => {
   const loginMutation = useLoginMutation();
+  const navigate = useNavigate();
 
   const formik = useFormik<formValues>({
     initialValues: {
@@ -22,7 +24,6 @@ const Login = () => {
     },
     validationSchema: ValidationSchema,
     onSubmit: (values: formValues) => {
-      console.log(values);
       loginMutation.mutate(values);
     },
   });
@@ -77,9 +78,21 @@ const Login = () => {
                 ? `${formik.errors.password}!`
                 : ""}
             </p>
-            <button className=" mr-[37%] text-white opacity-60 hover:underline">
-              forgot password?
-            </button>
+            <div className="flex w-full gap-3 justify-around">
+              <button
+                onClick={() => navigate("/forgotPassword")}
+                className=" text-white opacity-60 hover:underline"
+              >
+                forgot password?
+              </button>
+              <button
+                onClick={() => navigate("/signUp")}
+                className=" text-white opacity-60 hover:underline"
+              >
+                Create account
+              </button>
+            </div>
+
             <button
               type="submit"
               className="text-white outline outline-white font-semibold shadow mt-4 bg-whit w-[35%] rounded-full h-12 text-xl hover:scale-105 hover:bg-white hover:text-blue-500 animation duration-150 ease-in"

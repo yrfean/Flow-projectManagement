@@ -1,5 +1,6 @@
 import Project from "../Schemas/projectSchema";
 import { Request, Response } from "express";
+import Task from "../Schemas/taskSchema";
 
 // create prject(set title,discription ,team members,team lead,due date,priority,) - admin will do it and
 
@@ -65,6 +66,8 @@ export const updateProject = async (req: Request, res: Response) => {
 export const deleteProject = async (req: Request, res: Response) => {
   const { _id } = req.params;
   try {
+    await Task.deleteMany({ project: _id });
+
     const deletedProject = await Project.findByIdAndDelete({ _id });
     res.status(200).json({ message: "deleted project", data: deletedProject });
   } catch (error) {

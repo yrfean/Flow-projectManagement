@@ -1,35 +1,58 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "./Layout";
-import Messages from "./Pages/Global Pages/Messages";
-import Settings from "./Pages/Global Pages/Settings";
+import Messages from "./Messages/Messages";
+import Settings from "./Pages/Settings";
 import Login from "./Login/Login";
 import AdminHome from "./Pages/Admin Pages/AdminHome";
-import Members from "./Pages/Admin Pages/Members";
 import Home from "./Pages/Home";
+import MembersHome from "./Pages/Admin Pages/MembersHome";
+import SignUp from "./Login/SignUp";
+import ForgotPassword from "./Login/ForgotPassword";
+import TokenCheck from "./Components/TokenCheck";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: (
+      <TokenCheck>
+        <Layout />
+      </TokenCheck>
+    ),
     children: [
       { path: "/admin", element: <AdminHome /> },
       { path: "/home", element: <Home /> },
       { path: "/settings", element: <Settings /> },
       { path: "/messages", element: <Messages /> },
+      {
+        path: "/admin/members", //Only for admin
+        element: <MembersHome />,
+      },
     ],
   },
 
   {
-    path: "/members", //Only for admin
-    element: <Members />,
-  },
-  {
     path: "/settings",
-    element: <Settings />,
+    element: (
+      <TokenCheck>
+        <Settings />
+      </TokenCheck>
+    ),
   },
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/forgotPassword",
+    element: <ForgotPassword />,
+  },
+  {
+    path: "/signUp",
+    element: <SignUp />,
+  },
+  {
+    path: "/mock",
+    // element: <ProgressiveCircleBar />,
   },
 ]);
 

@@ -2,7 +2,7 @@ import axios from "axios";
 const backendUri = import.meta.env.VITE_BACKEND_PORT;
 
 const getUser = async () => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   // console.log(token);
 
   try {
@@ -38,16 +38,26 @@ const getUsers = async () => {
     console.log(error);
   }
 };
+const getAllMesssages = async () => {
+  try {
+    const response = await axios.get(`${backendUri}/getAllMessages`);
+    return response.data.allMessages;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const getAllDatas = async () => {
   try {
-    const [user, allProjects, allTasks, allUsers] = await Promise.all([
-      getUser(),
-      getAllProjects(),
-      getAllTasks(),
-      getUsers(),
-    ]);
-    return { user, allProjects, allTasks, allUsers };
+    const [user, allProjects, allTasks, allUsers, allMessages] =
+      await Promise.all([
+        getUser(),
+        getAllProjects(),
+        getAllTasks(),
+        getUsers(),
+        getAllMesssages(),
+      ]);
+    return { user, allProjects, allTasks, allUsers, allMessages };
   } catch (error) {
     console.log(error);
     throw new Error("error in getAllTasks fn");

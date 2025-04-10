@@ -205,7 +205,7 @@ const TasksTracking = ({
                           )}
                           <img
                             src={user?.dp}
-                            className="w-6 h-6 cursor-pointer rounded-full"
+                            className="w-6 h-6 object-cover cursor-pointer rounded-full"
                           />
                         </div>
                         {/* Eclipse popup */}

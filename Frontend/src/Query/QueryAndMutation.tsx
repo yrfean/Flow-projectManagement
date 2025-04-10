@@ -15,12 +15,107 @@ export const useLoginMutation = () => {
     },
     onSuccess: ({ data }) => {
       console.log("response:", data);
-      localStorage.setItem("token", data.data.token);
-      localStorage.setItem("_id", data.data._id);
-      navigate("/lead");
+      if (data.existing.name === "admin") {
+        sessionStorage.setItem("role", "admin");
+      }
+      sessionStorage.setItem("token", data.data.token);
+      sessionStorage.setItem("_id", data.data._id);
+      if (data.existing.name === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/home");
+      }
     },
     onError: (err) => {
       console.log(err);
+    },
+  });
+};
+
+
+//Crerate user
+export const useCreateUser = () => {
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: async (data: any) => {
+      const response = await axios.post(`${backendUri}/createUser`, data);
+      return response.data;
+    },
+    onSuccess: (data: any) => {
+      console.log("User creating successfull");
+      console.log(data);
+      sessionStorage.setItem("token", data.token);
+      navigate("/home");
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+};
+
+// Update user
+export const useUpdateUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: any) => {
+      await axios.put(`${backendUri}/updateUser/${data.id}`, data.data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["All data"] });
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+};
+
+//Create project
+export const useCreateProject = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: any) => {
+      await axios.post(`${backendUri}/createProject`, data);
+    },
+    onSuccess: () => {
+      console.log("successfullly created new project");
+      queryClient.invalidateQueries({ queryKey: ["All data"] });
+    },
+    onError: (err) => {
+      console.log("error happnd in mutatuon:", err);
+    },
+  });
+};
+
+//Update project
+export const useUpdateProject = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: any) => {
+      await axios.put(`${backendUri}/updateProject/${data.id}`, data.values);
+    },
+    onSuccess: () => {
+      console.log("successfullly created new project");
+      queryClient.invalidateQueries({ queryKey: ["All data"] });
+    },
+    onError: (err) => {
+      console.log("error happnd in mutatuon:", err);
+    },
+  });
+};
+
+//Delete project
+export const useDeleteProject = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: any) => {
+      await axios.delete(`${backendUri}/deleteProject/${id}`);
+    },
+    onSuccess: () => {
+      console.log("successfullly created new project");
+      queryClient.invalidateQueries({ queryKey: ["All data"] });
+    },
+    onError: (err) => {
+      console.log("error happnd in mutatuon:", err);
     },
   });
 };
@@ -88,6 +183,22 @@ export const useDeleteTask = () => {
     },
     onError: (er: any) => {
       console.log(er);
+    },
+  });
+};
+
+// Delete User
+export const useDeleteUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id) => {
+      await axios.delete(`${backendUri}/deleteUser/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["All data"] });
+    },
+    onError: (err) => {
+      console.log(err);
     },
   });
 };
